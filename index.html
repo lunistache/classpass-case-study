@@ -1,0 +1,607 @@
+<title>ClassPass Cohort Case Study — Nicola Fontaine</title>
+<style>
+:root{
+  --page:#f6f8fa; --surface:#ffffff; --ink:#1a2532; --muted:#5b6a7d; --faint:#8a97a8;
+  --line:#dde4ec; --accent:#2563d9; --accent-soft:#dbe7fb; --orange:#e07b28; --orange-soft:#fbe9d7;
+  --good:#2e7d4f; --shadow:0 1px 3px rgba(26,37,50,.07),0 4px 14px rgba(26,37,50,.05);
+}
+@media (prefers-color-scheme: dark){
+  :root{ --page:#0f151c; --surface:#161e28; --ink:#e7edf4; --muted:#93a1b3; --faint:#6b7889;
+    --line:#26303d; --accent:#5b93f5; --accent-soft:#1d2c45; --orange:#eb9350; --orange-soft:#3a2a1a;
+    --good:#5cc08a; --shadow:0 1px 3px rgba(0,0,0,.4); }
+}
+:root[data-theme="light"]{ --page:#f6f8fa; --surface:#ffffff; --ink:#1a2532; --muted:#5b6a7d; --faint:#8a97a8;
+  --line:#dde4ec; --accent:#2563d9; --accent-soft:#dbe7fb; --orange:#e07b28; --orange-soft:#fbe9d7;
+  --good:#2e7d4f; --shadow:0 1px 3px rgba(26,37,50,.07),0 4px 14px rgba(26,37,50,.05); }
+:root[data-theme="dark"]{ --page:#0f151c; --surface:#161e28; --ink:#e7edf4; --muted:#93a1b3; --faint:#6b7889;
+  --line:#26303d; --accent:#5b93f5; --accent-soft:#1d2c45; --orange:#eb9350; --orange-soft:#3a2a1a;
+  --good:#5cc08a; --shadow:0 1px 3px rgba(0,0,0,.4); }
+
+*{box-sizing:border-box}
+body{background:var(--page);color:var(--ink);font-family:"Segoe UI",system-ui,-apple-system,sans-serif;
+  margin:0;line-height:1.55;font-size:16px}
+.wrap{max-width:920px;margin:0 auto;padding:0 20px 80px}
+a{color:var(--accent)}
+
+header.hero{padding:52px 0 8px}
+.eyebrow{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600}
+h1{font-size:clamp(28px,5vw,42px);line-height:1.12;margin:.35em 0 .3em;font-weight:700;letter-spacing:-.02em;text-wrap:balance}
+.byline{color:var(--muted);max-width:62ch;margin:0}
+.byline b{color:var(--ink)}
+
+nav.chips{position:sticky;top:0;z-index:30;background:var(--page);padding:14px 0 12px;display:flex;gap:8px;flex-wrap:wrap;border-bottom:1px solid var(--line);margin-top:26px}
+nav.chips a{font-size:13px;font-weight:600;text-decoration:none;color:var(--muted);border:1px solid var(--line);
+  background:var(--surface);border-radius:999px;padding:6px 14px}
+nav.chips a:hover,nav.chips a:focus-visible{color:var(--accent);border-color:var(--accent)}
+nav.chips a.on{color:var(--accent);border-color:var(--accent);background:var(--accent-soft)}
+
+.theme-sw{margin-left:auto;position:relative;width:64px;height:32px;border-radius:999px;border:1px solid var(--line);
+  background:var(--surface);cursor:pointer;padding:0;flex:none}
+.theme-sw .knob{position:absolute;top:2px;left:3px;width:26px;height:26px;border-radius:50%;
+  background:var(--accent-soft);border:1px solid var(--accent);transition:transform .18s ease}
+.theme-sw[aria-checked="true"] .knob{transform:translateX(32px)}
+.theme-sw svg{position:absolute;top:50%;width:15px;height:15px;transform:translate(-50%,-50%);z-index:2;pointer-events:none}
+.theme-sw .sun{left:16px;color:var(--orange)}
+.theme-sw .moon{left:48px;color:var(--faint)}
+.theme-sw[aria-checked="true"] .sun{color:var(--faint)}
+.theme-sw[aria-checked="true"] .moon{color:var(--accent)}
+.theme-sw:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (prefers-reduced-motion: reduce){ .theme-sw .knob{transition:none} }
+
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;margin:0 0 12px}
+.seg button{background:var(--surface);border:none;color:var(--muted);font:600 12.5px "Segoe UI",system-ui,sans-serif;
+  padding:6px 13px;cursor:pointer;border-right:1px solid var(--line)}
+.seg button:last-child{border-right:none}
+.seg button[aria-pressed="true"]{background:var(--accent-soft);color:var(--accent)}
+.seg button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+
+.slider-row.blue{background:var(--accent-soft);border-color:var(--accent)}
+.slider-row.blue input[type=range]{accent-color:var(--accent)}
+
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:28px 0 10px}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;box-shadow:var(--shadow)}
+.tile .n{font-size:30px;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.1}
+.tile .l{font-size:12.5px;color:var(--muted);margin-top:4px}
+.tile.fc .n{color:var(--orange)}
+
+section.q{margin-top:64px;scroll-margin-top:70px}
+.qhead .eyebrow{color:var(--accent)}
+.qtext{font-style:italic;color:var(--muted);margin:.2em 0 0;max-width:70ch}
+.answer{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin:18px 0 6px}
+.answer .big{font-size:clamp(34px,6vw,52px);font-weight:700;letter-spacing:-.025em;font-variant-numeric:tabular-nums;line-height:1}
+.answer .unit{color:var(--muted);font-size:17px}
+p.lede{max-width:68ch;margin:.6em 0}
+p.note{max-width:68ch;color:var(--muted);font-size:14.5px}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);padding:20px 20px 14px;margin:20px 0}
+.card h3{margin:0 0 2px;font-size:15px;font-weight:600}
+.card .sub{font-size:13px;color:var(--muted);margin:0 0 12px}
+.chartbox{position:relative}
+.chartbox svg{display:block;width:100%;height:auto}
+.tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--page);font-size:12.5px;
+  padding:6px 10px;border-radius:6px;white-space:nowrap;transform:translate(-50%,-115%);opacity:0;transition:opacity .12s;font-variant-numeric:tabular-nums}
+@media (prefers-reduced-motion: reduce){ .tip{transition:none} }
+.legend{display:flex;gap:18px;font-size:13px;color:var(--muted);margin-top:8px;flex-wrap:wrap}
+.legend .k{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+
+details.data{margin:6px 0 0}
+details.data summary{cursor:pointer;font-size:13px;color:var(--muted);font-weight:600}
+details.data summary:hover{color:var(--accent)}
+table{border-collapse:collapse;font-size:13.5px;margin-top:10px;font-variant-numeric:tabular-nums;min-width:340px}
+th,td{border-bottom:1px solid var(--line);padding:5px 14px 5px 0;text-align:right}
+th:first-child,td:first-child{text-align:left}
+th{color:var(--muted);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.06em}
+.tablewrap{overflow-x:auto}
+
+.split{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin:16px 0}
+.mini{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.mini .h{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:600}
+.mini .v{font-size:24px;font-weight:700;font-variant-numeric:tabular-nums;margin-top:2px}
+.mini p{font-size:13.5px;color:var(--muted);margin:6px 0 0}
+
+.slider-row{display:flex;align-items:center;gap:16px;flex-wrap:wrap;background:var(--orange-soft);
+  border:1px solid var(--orange);border-radius:10px;padding:14px 18px;margin:16px 0}
+.slider-row label{font-weight:600;font-size:14px}
+.slider-row input[type=range]{flex:1;min-width:160px;accent-color:var(--orange)}
+.slider-row .val{font-weight:700;font-size:18px;font-variant-numeric:tabular-nums;min-width:56px}
+.slider-row .out{font-size:14px;color:var(--muted)}
+.slider-row .out b{color:var(--ink);font-size:16px}
+
+.recs{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:14px;margin-top:16px}
+.rec{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;display:flex;flex-direction:column;gap:8px}
+.rec .tag{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.rec h4{margin:0;font-size:15.5px;line-height:1.35}
+.rec p{margin:0;font-size:13.5px;color:var(--muted)}
+.rec .ev{border-top:1px dashed var(--line);padding-top:8px;font-size:12.5px}
+
+.disclaimer{border-left:3px solid var(--orange);background:var(--surface);border-radius:0 10px 10px 0;
+  padding:12px 18px;font-size:14px;color:var(--muted);margin:26px 0}
+footer{margin-top:70px;border-top:1px solid var(--line);padding-top:18px;font-size:13.5px;color:var(--muted)}
+footer p{max-width:72ch}
+.srcs{font-size:12.5px;color:var(--faint);line-height:1.8}
+</style>
+
+<div class="wrap">
+<header class="hero">
+  <div class="eyebrow">FP&amp;A case study · ClassPass · February 2016 cohort</div>
+  <h1>Where ClassPass loses its subscribers — and when</h1>
+  <p class="byline"><b>Nicola Fontaine</b> · Interactive companion to my Excel workbook — 5,001 customers who joined in February 2016, tracked until the snapshot of Oct 15, 2016. Full reasoning, formulas and sources live in the workbook; this page is for exploring the results.</p>
+</header>
+
+<nav class="chips" aria-label="Sections">
+  <a href="#q1">Q1 · Active on June 9</a>
+  <a href="#q2">Q2 · April churn rate</a>
+  <a href="#q3">Q3 · October forecast</a>
+  <a href="#q4">Q4 · Drivers &amp; ideas</a>
+  <button class="theme-sw" id="themeSw" role="switch" aria-checked="false" aria-label="Toggle dark theme">
+    <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5" fill="currentColor" stroke="none"/><path d="M12 2v2.5M12 19.5V22M3 12h2.5M18.5 12H21M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>
+    <svg class="moon" viewBox="0 0 24 24" fill="currentColor"><path d="M20.6 13.1A8.6 8.6 0 1 1 10.9 3.4a7 7 0 1 0 9.7 9.7z"/></svg>
+    <span class="knob"></span>
+  </button>
+</nav>
+
+<div class="tiles">
+  <div class="tile"><div class="n">3,478</div><div class="l">customers still active on June&nbsp;9, 2016</div></div>
+  <div class="tile"><div class="n">10.73%</div><div class="l">April 2016 churn rate (469 / 4,370)</div></div>
+  <div class="tile fc"><div class="n" id="tileFc">~138</div><div class="l">predicted October churners (96 already visible)</div></div>
+  <div class="tile"><div class="n">63%</div><div class="l">of all churn happens in a customer's first 3 months</div></div>
+</div>
+
+<!-- ================= Q1 ================= -->
+<section class="q" id="q1">
+  <div class="qhead">
+    <div class="eyebrow">Question 1</div>
+    <p class="qtext">"How many of the customers in the attached data set were still active ClassPass customers on June 9th, 2016?"</p>
+  </div>
+  <div class="answer"><span class="big">3,478</span><span class="unit">customers</span></div>
+  <p class="lede">Active = June 9 falls inside your paid month (<b>start ≤ June 9 ≤ end</b>). Everyone keeps their own bill day, so the qualifying months are a mix of May-starts and June-starts:</p>
+  <div class="card">
+    <h3>Why a single date filter can't answer this</h3>
+    <p class="sub">Three real customer patterns against the dashed date line — <b>drag the slider</b> to move the date and watch who counts.</p>
+    <div class="chartbox" id="c-q1"></div>
+    <div class="slider-row blue">
+      <label for="dateSlider">Pick a date</label>
+      <input type="range" id="dateSlider" min="0" max="75" step="1" value="39" aria-label="Date between May 1 and July 15, 2016">
+      <span class="val" id="dateVal">Jun 9</span>
+      <span class="out">active customers that day → <b id="dateOut">3,478</b></span>
+    </div>
+  </div>
+  <p class="note">204 of the 3,478 had already requested cancellation — they still count: a member stays active until the end of the month they paid for.</p>
+</section>
+
+<!-- ================= Q2 ================= -->
+<section class="q" id="q2">
+  <div class="qhead">
+    <div class="eyebrow">Question 2</div>
+    <p class="qtext">"What was the April 2016 churn rate of the customers in the attached dataset?"</p>
+  </div>
+  <div class="answer"><span class="big">10.73%</span><span class="unit">= 469 churned ÷ 4,370 active on April 1</span></div>
+  <p class="lede">The trap: churn happens on the <b>last day of the paid month</b>, not the day you click cancel — 122 of April's 469 churners clicked back in March. Counting April <i>clicks</i> instead gives a plausible-looking 9.89%, which is wrong.</p>
+  <div class="card">
+    <h3>The cohort, month by month</h3>
+    <p class="sub">Hover the points for the exact numbers. February and October excluded (cohort still joining / snapshot cut-off).</p>
+    <div class="seg" id="segQ2" role="group" aria-label="Choose metric">
+      <button aria-pressed="true" data-m="rate">Churn rate</button>
+      <button aria-pressed="false" data-m="churn">Churned</button>
+      <button aria-pressed="false" data-m="active">Active base</button>
+    </div>
+    <div class="chartbox" id="c-q2"></div>
+    <details class="data"><summary>Data behind this chart</summary><div class="tablewrap"><table id="t-q2"></table></div></details>
+  </div>
+  <p class="note">Churn eases as the cohort matures and flattens near 5% — the launching pad for Question 3.</p>
+</section>
+
+<!-- ================= Q3 ================= -->
+<section class="q" id="q3">
+  <div class="qhead">
+    <div class="eyebrow">Question 3</div>
+    <p class="qtext">"If you had to make a prediction, how many customers in the attached dataset will churn in the month of October?"</p>
+  </div>
+  <div class="answer"><span class="big" id="q3big">≈138</span><span class="unit">= 96 already visible + <span id="q3extra">~42</span> predicted</span></div>
+  <p class="lede">The data is a snapshot taken <b>October&nbsp;15</b> — mid-month. The 96 cancellations on file are a floor, not the answer: people cancel late (44% in the final 5 days before the charge), so many October cancels simply aren't visible yet.</p>
+  <div class="split">
+    <div class="mini"><div class="h">Method 1 · trend</div><div class="v" id="m1v">141</div>
+      <p>2,815 customers at risk × an assumed October rate of ~5%. <b>Try the slider.</b></p></div>
+    <div class="mini"><div class="h">Method 2 · scale up what we see</div><div class="v">134</div>
+      <p>72 finished churns (facts) + the 24 early cancels seen so far, scaled up by how late people historically cancel.</p></div>
+  </div>
+  <div class="slider-row">
+    <label for="rate">Assumed October rate</label>
+    <input type="range" id="rate" min="4" max="6" step="0.1" value="5" aria-describedby="q3big">
+    <span class="val" id="rateVal">5.0%</span>
+    <span class="out">Method 1 → <b id="m1out">141</b> · midpoint with Method 2 → <b id="midOut">138</b></span>
+  </div>
+  <div class="card">
+    <h3>Churners by month — actuals, plus the October forecast</h3>
+    <p class="sub">Blue = observed churn. Orange = predicted additional October cancellations (moves with the slider).</p>
+    <div class="chartbox" id="c-q3"></div>
+    <div class="legend"><span><span class="k" style="background:var(--accent)"></span>Observed churners</span>
+      <span><span class="k" style="background:var(--orange)"></span>Forecast additional (October)</span></div>
+    <details class="data"><summary>Data behind this chart</summary><div class="tablewrap"><table id="t-q3"></table></div></details>
+  </div>
+  <p class="note">All assumptions are stated and tested in the workbook (Q3 sheet).</p>
+</section>
+
+<!-- ================= Q4 ================= -->
+<section class="q" id="q4">
+  <div class="qhead">
+    <div class="eyebrow">Question 4</div>
+    <p class="qtext">"Are there any trends in how churn differs by customer attributes (e.g., city, length of time on CP)? Ideas for what ClassPass could do to improve churn?"</p>
+  </div>
+  <div class="answer"><span class="big">Tenure, not geography</span></div>
+  <p class="lede">A brand-new customer is <b>3.5× more likely to cancel</b> than a month-8 veteran — the exercise habit either forms early or never does. City and join-week differences are negligible.</p>
+
+  <div class="card">
+    <h3>Cancellation rate by month of a customer's life</h3>
+    <p class="sub">Share of customers reaching month #N who cancel during it. Month #9 excluded (cut off by the snapshot).</p>
+    <div class="chartbox" id="c-q4a"></div>
+    <details class="data"><summary>Data behind this chart</summary><div class="tablewrap"><table id="t-q4a"></table></div></details>
+  </div>
+
+  <div class="card">
+    <h3>When in their month do people cancel?</h3>
+    <p class="sub">All 2,186 cancellations from completed months, by days remaining before renewal. The final five days (highlighted) hold 44% of all cancels.</p>
+    <div class="chartbox" id="c-q4b"></div>
+    <details class="data"><summary>Data behind this chart</summary><div class="tablewrap"><table id="t-q4b"></table></div></details>
+  </div>
+
+  <div class="split">
+    <div class="mini"><div class="h">By city — an honest null</div><div class="v">44.0 / 46.5 / 47.0%</div>
+      <p>A 3-point spread over ~1,650 customers per city is close to noise. Geography is not the lever.</p></div>
+    <div class="mini"><div class="h">By join week — nothing</div><div class="v">≈46% everywhere</div>
+      <p>Every week of February churns the same. Signup timing carries no signal.</p></div>
+  </div>
+
+  <h3 style="margin:34px 0 0;font-size:19px">What ClassPass could do</h3>
+  <div class="recs">
+    <div class="rec"><span class="tag">Months 1–3 · 63% of churn</span>
+      <h4>Make the first 30 days impossible to fail</h4>
+      <p>First class booked in week one; reward 4 classes in 30 days; nudge if nothing is booked by day 14.</p>
+      <p class="ev">ClassPass later ran a "4 classes in 30 days" reward: <b>+16% day-30 retention</b>.</p></div>
+    <div class="rec"><span class="tag">44% cancel in the last 5 days</span>
+      <h4>Intercept the cancel click</h4>
+      <p>Offer a pause, a lighter plan, or a skipped month before confirming — matched to the stated reason.</p>
+      <p class="ev">~25% of would-be churners accept a pause; ~3 in 4 pausers come back.</p></div>
+    <div class="rec"><span class="tag">Risk halves after month 3</span>
+      <h4>Sell commitment upfront</h4>
+      <p>A discounted 3-month starter plan carries new members past the danger zone where the habit forms.</p>
+      <p class="ev">Attending 2×/week in the first 6 weeks predicts still being active at month 6.</p></div>
+    <div class="rec"><span class="tag">Beyond the data</span>
+      <h4>Build community, not just inventory</h4>
+      <p>Invite-a-friend, group bookings, streaks and challenges, a feed of friends' classes.</p>
+      <p class="ev">Social contact is the #1 stated reason people stick with exercise.</p></div>
+  </div>
+
+  <div class="disclaimer"><b>Note:</b> the dataset is from 2016; the research behind these ideas is more recent, used as directional evidence — habit formation and cancel-flow behaviour aren't time-sensitive. Full evidence, caveats and sources: workbook, Q4 sheet.</div>
+</section>
+
+<footer>
+  <p>Companion to the Excel workbook — every number here is produced by auditable formulas there (COUNTIFS on the raw 30,479-row dataset, no pivot tables). Nicola Fontaine.</p>
+</footer>
+</div>
+
+<script>
+(function(){
+"use strict";
+var css = function(v){ return "var(" + v + ")"; }; /* live tokens: charts follow theme switches */
+var NS = "http://www.w3.org/2000/svg";
+function el(tag, attrs, parent){
+  var e = document.createElementNS(NS, tag);
+  for (var k in attrs) e.setAttribute(k, attrs[k]);
+  if (parent) parent.appendChild(e);
+  return e;
+}
+function fmt(n){ return n.toLocaleString("en-US"); }
+
+/* ---------- data ---------- */
+var months = ["Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct"];
+var active = [178,4978,4370,3901,3545,3319,3130,2966,2815];
+var churn  = [23,608,469,356,226,189,164,151,96];
+var rates  = active.map(function(a,i){ return churn[i]/a; });
+var hazard = [12.40,10.71,9.10,6.44,5.77,5.20,5.11,3.51];
+var hazN   = [5001,4381,3912,3556,3327,3135,2972,2820];
+var hazC   = [620,469,356,229,192,163,152,99];
+var gapHist = [132,105,252,230,249,229,110,121,62,56,62,66,56,24,33,25,30,32,32,30,30,22,28,36,38,24,15,10,26,16,5];
+var M2 = 134, FLOOR = 96, AT_RISK = 2815;
+
+/* ---------- shared tooltip ---------- */
+function makeTip(box){
+  var t = document.createElement("div");
+  t.className = "tip";
+  box.appendChild(t);
+  return t;
+}
+function showTip(tip, box, x, y, html){
+  tip.innerHTML = html;
+  var r = box.getBoundingClientRect();
+  var svg = box.querySelector("svg");
+  var vb = svg.viewBox.baseVal;
+  var sx = r.width / vb.width;
+  tip.style.left = (x * sx) + "px";
+  tip.style.top  = (y * sx) + "px";
+  tip.style.opacity = 1;
+}
+function hideTip(tip){ tip.style.opacity = 0; }
+
+/* ---------- Q1 interactive diagram: draggable date ---------- */
+var dailyActive = [3901,3891,3883,3868,3852,3839,3831,3820,3807,3793,3776,3763,3748,3737,3726,3716,3706,3695,3683,3668,3658,3650,3641,3627,3618,3601,3586,3569,3556,3556,3556,3545,3533,3524,3518,3508,3493,3488,3486,3478,3467,3461,3452,3442,3438,3429,3418,3415,3409,3401,3387,3385,3377,3373,3367,3358,3354,3343,3337,3328,3328,3319,3311,3308,3299,3291,3289,3284,3278,3274,3267,3257,3254,3245,3239,3236];
+var Q1_D0 = Date.UTC(2016,4,1), Q1_D1 = Date.UTC(2016,6,15);
+var MN = ["Jan","Feb","Mar","Apr","May","Jun","Jul"];
+function idxDate(i){ var d = new Date(Q1_D0 + i*86400000); return MN[d.getUTCMonth()]+" "+d.getUTCDate(); }
+function drawQ1(idx){
+  var box = document.getElementById("c-q1");
+  box.innerHTML = "";
+  var W=720,H=190,L=90,R=30;
+  var svg = el("svg",{viewBox:"0 0 "+W+" "+H,role:"img","aria-label":"Three subscription-month timelines compared with a chosen date"},box);
+  var cur = Q1_D0 + idx*86400000;
+  function X(t){ return L + (t-Q1_D0)/(Q1_D1-Q1_D0)*(W-L-R); }
+  var rows = [
+    {y:46, s:Date.UTC(2016,4,25), e:Date.UTC(2016,5,24), lab:"Billed the 25th", txt:"May 25 – Jun 24"},
+    {y:92, s:Date.UTC(2016,5,3),  e:Date.UTC(2016,6,2),  lab:"Billed the 3rd",  txt:"Jun 3 – Jul 2"},
+    {y:138,s:Date.UTC(2016,4,10), e:Date.UTC(2016,5,8),  lab:"Cancelled member", txt:"May 10 – Jun 8"}
+  ];
+  [[Date.UTC(2016,4,1),"May 1"],[Date.UTC(2016,5,1),"Jun 1"],[Date.UTC(2016,6,1),"Jul 1"]].forEach(function(g){
+    var x = X(g[0]);
+    el("line",{x1:x,y1:20,x2:x,y2:H-24,stroke:css("--line"),"stroke-width":1},svg);
+    var t = el("text",{x:x,y:H-8,"text-anchor":"middle",fill:css("--faint"),"font-size":11,"font-family":"ui-monospace,Consolas,monospace"},svg);
+    t.textContent = g[1];
+  });
+  rows.forEach(function(rw){
+    var on = rw.s <= cur && cur <= rw.e;
+    var x1 = X(rw.s), x2 = X(rw.e);
+    el("rect",{x:x1,y:rw.y-9,width:x2-x1,height:18,rx:4,
+      fill:on?css("--accent"):css("--faint"),opacity:on?0.9:0.5},svg);
+    var tl = el("text",{x:L-8,y:rw.y+4,"text-anchor":"end",fill:css("--muted"),"font-size":12},svg);
+    tl.textContent = rw.lab;
+    var tt = el("text",{x:x1+6,y:rw.y+4,fill:"#fff","font-size":11,"font-family":"ui-monospace,Consolas,monospace"},svg);
+    tt.textContent = rw.txt + (on ? "  ✓ counts" : "  ✗ not active");
+  });
+  var xJ = X(cur);
+  el("line",{x1:xJ,y1:14,x2:xJ,y2:H-24,stroke:css("--ink"),"stroke-width":1.6,"stroke-dasharray":"5 4"},svg);
+  var tj = el("text",{x:Math.min(Math.max(xJ,L+24),W-R-24),y:10,"text-anchor":"middle",fill:css("--ink"),"font-size":11.5,"font-weight":700},svg);
+  tj.textContent = idxDate(idx);
+  document.getElementById("dateVal").textContent = idxDate(idx);
+  document.getElementById("dateOut").textContent = fmt(dailyActive[idx]);
+}
+drawQ1(39);
+document.getElementById("dateSlider").addEventListener("input", function(){
+  drawQ1(parseInt(this.value,10));
+});
+
+/* ---------- generic line chart ---------- */
+function lineChart(boxId, labels, values, opts){
+  var box = document.getElementById(boxId);
+  box.innerHTML = "";
+  var W=720,H=280,L=64,R=20,T=26,B=40;
+  var svg = el("svg",{viewBox:"0 0 "+W+" "+H,role:"img","aria-label":opts.aria},box);
+  var tip = makeTip(box);
+  var ymax = opts.ymax || Math.max.apply(null,values)*1.15;
+  function X(i){ return L + i*(W-L-R)/(labels.length-1); }
+  function Y(v){ return T + (1-v/ymax)*(H-T-B); }
+  var ticks = opts.ticks;
+  ticks.forEach(function(tv){
+    var y = Y(tv);
+    el("line",{x1:L,y1:y,x2:W-R,y2:y,stroke:css("--line"),"stroke-width":1},svg);
+    var t = el("text",{x:L-8,y:y+4,"text-anchor":"end",fill:css("--faint"),"font-size":11.5,"font-family":"ui-monospace,Consolas,monospace"},svg);
+    t.textContent = opts.fmtTick(tv);
+  });
+  labels.forEach(function(lb,i){
+    var t = el("text",{x:X(i),y:H-14,"text-anchor":"middle",fill:css("--muted"),"font-size":12},svg);
+    t.textContent = lb;
+  });
+  var path = values.map(function(v,i){ return (i?"L":"M")+X(i)+" "+Y(v); }).join(" ");
+  el("path",{d:path,fill:"none",stroke:css("--accent"),"stroke-width":2.4,"stroke-linejoin":"round"},svg);
+  values.forEach(function(v,i){
+    var hl = opts.highlight === i;
+    el("circle",{cx:X(i),cy:Y(v),r:hl?6:4.5,fill:hl?css("--orange"):css("--accent"),
+      stroke:css("--surface"),"stroke-width":2},svg);
+    if (opts.labelAll || hl){
+      var t = el("text",{x:X(i),y:Y(v)-12,"text-anchor":"middle",fill:hl?css("--orange"):css("--muted"),
+        "font-size":11.5,"font-weight":hl?700:400,"font-family":"ui-monospace,Consolas,monospace"},svg);
+      t.textContent = opts.fmtVal(v);
+    }
+    var hit = el("rect",{x:X(i)-22,y:T,width:44,height:H-T-B,fill:"transparent"},svg);
+    hit.addEventListener("mousemove",function(){ showTip(tip,box,X(i),Y(v),opts.tipHtml(i,v)); });
+    hit.addEventListener("mouseleave",function(){ hideTip(tip); });
+  });
+}
+
+/* Q2 chart: metric toggle between rate / churned / active */
+var q2cfg = {
+  rate:  { vals: rates.slice(1,8).map(function(r){return r*100;}), ymax:14,  ticks:[0,5,10],
+           fmtTick:function(v){return v+"%";}, fmtVal:function(v){return v.toFixed(1)+"%";}, aria:"Monthly churn rate" },
+  churn: { vals: churn.slice(1,8), ymax:700, ticks:[0,200,400,600],
+           fmtTick:fmt, fmtVal:fmt, aria:"Churners per month" },
+  active:{ vals: active.slice(1,8), ymax:5500, ticks:[0,2500,5000],
+           fmtTick:fmt, fmtVal:fmt, aria:"Active customers at month start" }
+};
+function drawQ2(metric){
+  var c = q2cfg[metric];
+  lineChart("c-q2", months.slice(1,8), c.vals, {
+    aria:c.aria, ymax:c.ymax, ticks:c.ticks, fmtTick:c.fmtTick, fmtVal:c.fmtVal,
+    highlight:1, labelAll:true,
+    tipHtml:function(i,v){
+      var m=i+1;
+      return months[m]+" 2016 · "+fmt(churn[m])+" ÷ "+fmt(active[m])+" = <b>"+(rates[m]*100).toFixed(2)+"%</b>";
+    }
+  });
+}
+drawQ2("rate");
+document.querySelectorAll("#segQ2 button").forEach(function(b){
+  b.addEventListener("click", function(){
+    document.querySelectorAll("#segQ2 button").forEach(function(x){ x.setAttribute("aria-pressed","false"); });
+    b.setAttribute("aria-pressed","true");
+    drawQ2(b.getAttribute("data-m"));
+  });
+});
+var tq2 = document.getElementById("t-q2");
+tq2.innerHTML = "<tr><th>Month</th><th>Active at start</th><th>Churned</th><th>Rate</th></tr>" +
+  months.map(function(m,i){
+    return "<tr><td>"+m+" 2016</td><td>"+fmt(active[i])+"</td><td>"+fmt(churn[i])+"</td><td>"+(rates[i]*100).toFixed(2)+"%</td></tr>";
+  }).join("");
+
+/* ---------- Q3 stacked bars ---------- */
+var q3state = { rate: 0.05 };
+function drawQ3(){
+  var box = document.getElementById("c-q3");
+  box.innerHTML = "";
+  var m1 = Math.round(AT_RISK*q3state.rate);
+  var mid = Math.round((m1+M2)/2);
+  var extra = mid - FLOOR;
+  var W=720,H=280,L=64,R=20,T=26,B=40;
+  var svg = el("svg",{viewBox:"0 0 "+W+" "+H,role:"img","aria-label":"Churners per month with October forecast"},box);
+  var tip = makeTip(box);
+  var vals = churn.slice(0,8).concat([FLOOR]);
+  var ymax = 700;
+  var n = 9, bw = (W-L-R)/n * 0.62;
+  function X(i){ return L + (i+0.5)*(W-L-R)/n; }
+  function Y(v){ return T + (1-v/ymax)*(H-T-B); }
+  [0,200,400,600].forEach(function(tv){
+    var y=Y(tv);
+    el("line",{x1:L,y1:y,x2:W-R,y2:y,stroke:css("--line"),"stroke-width":1},svg);
+    var t = el("text",{x:L-8,y:y+4,"text-anchor":"end",fill:css("--faint"),"font-size":11.5,"font-family":"ui-monospace,Consolas,monospace"},svg);
+    t.textContent = tv;
+  });
+  for (var i=0;i<n;i++){
+    (function(i){
+      var obs = vals[i];
+      var x = X(i)-bw/2;
+      el("rect",{x:x,y:Y(obs),width:bw,height:Y(0)-Y(obs),rx:3,fill:css("--accent")},svg);
+      var lab = el("text",{x:X(i),y:H-14,"text-anchor":"middle",fill:css("--muted"),"font-size":12},svg);
+      lab.textContent = months[i];
+      var tipHtml;
+      if (i<8){
+        tipHtml = months[i]+" · <b>"+fmt(obs)+"</b> churned (final)";
+        var vt = el("text",{x:X(i),y:Y(obs)-6,"text-anchor":"middle",fill:css("--muted"),"font-size":11,"font-family":"ui-monospace,Consolas,monospace"},svg);
+        vt.textContent = obs;
+      } else {
+        el("rect",{x:x,y:Y(obs+extra),width:bw,height:Y(obs)-Y(obs+extra)+ (extra>0?0:0),rx:3,fill:css("--orange")},svg);
+        // 2px surface gap between stacked segments
+        el("line",{x1:x,y1:Y(obs),x2:x+bw,y2:Y(obs),stroke:css("--surface"),"stroke-width":2},svg);
+        tipHtml = "Oct · <b>"+fmt(obs)+"</b> observed + <b>"+fmt(extra)+"</b> forecast = <b>"+fmt(obs+extra)+"</b>";
+        var vt2 = el("text",{x:X(i),y:Y(obs+extra)-6,"text-anchor":"middle",fill:css("--orange"),"font-size":11.5,"font-weight":700,"font-family":"ui-monospace,Consolas,monospace"},svg);
+        vt2.textContent = obs+extra;
+      }
+      var hit = el("rect",{x:x-6,y:T,width:bw+12,height:H-T-B,fill:"transparent"},svg);
+      hit.addEventListener("mousemove",function(){ showTip(tip,box,X(i),Y(i<8?vals[i]:vals[i]+extra)-4,tipHtml); });
+      hit.addEventListener("mouseleave",function(){ hideTip(tip); });
+    })(i);
+  }
+  // sync outputs
+  document.getElementById("m1v").textContent = m1;
+  document.getElementById("m1out").textContent = m1;
+  document.getElementById("midOut").textContent = mid;
+  document.getElementById("q3big").textContent = "≈"+mid;
+  document.getElementById("q3extra").textContent = "~"+extra;
+  document.getElementById("tileFc").textContent = "~"+mid;
+  var tq3 = document.getElementById("t-q3");
+  tq3.innerHTML = "<tr><th>Month</th><th>Observed</th><th>Forecast add'l</th></tr>" +
+    months.map(function(m,i){
+      var f = (i===8)? extra : 0;
+      var o = (i===8)? FLOOR : churn[i];
+      return "<tr><td>"+m+" 2016</td><td>"+fmt(o)+"</td><td>"+(f||"–")+"</td></tr>";
+    }).join("");
+}
+drawQ3();
+var slider = document.getElementById("rate");
+slider.addEventListener("input", function(){
+  q3state.rate = parseFloat(slider.value)/100;
+  document.getElementById("rateVal").textContent = parseFloat(slider.value).toFixed(1)+"%";
+  drawQ3();
+});
+
+/* ---------- Q4a tenure hazard ---------- */
+lineChart("c-q4a", hazard.map(function(_,i){return "#"+(i+1);}), hazard, {
+  aria:"Cancellation rate by month of customer's life",
+  ymax:14, ticks:[0,5,10], fmtTick:function(v){return v+"%";},
+  fmtVal:function(v){return v.toFixed(1)+"%";},
+  highlight:0, labelAll:true,
+  tipHtml:function(i,v){
+    return "Month #"+(i+1)+" · "+fmt(hazC[i])+" of "+fmt(hazN[i])+" cancelled = <b>"+hazard[i].toFixed(2)+"%</b>";
+  }
+});
+var tq4a = document.getElementById("t-q4a");
+tq4a.innerHTML = "<tr><th>Month of life</th><th>Reached it</th><th>Cancelled</th><th>Rate</th></tr>" +
+  hazard.map(function(h,i){
+    return "<tr><td>#"+(i+1)+"</td><td>"+fmt(hazN[i])+"</td><td>"+fmt(hazC[i])+"</td><td>"+h.toFixed(2)+"%</td></tr>";
+  }).join("");
+
+/* ---------- Q4b cancel-timing histogram ---------- */
+(function(){
+  var box = document.getElementById("c-q4b");
+  var W=720,H=260,L=56,R=20,T=24,B=44;
+  var svg = el("svg",{viewBox:"0 0 "+W+" "+H,role:"img","aria-label":"Cancellations by days remaining before renewal"},box);
+  var tip = makeTip(box);
+  var n = gapHist.length;
+  var ymax = 280;
+  var bw = (W-L-R)/n * 0.72;
+  function X(i){ return L + (i+0.5)*(W-L-R)/n; }
+  function Y(v){ return T + (1-v/ymax)*(H-T-B); }
+  [0,100,200].forEach(function(tv){
+    var y=Y(tv);
+    el("line",{x1:L,y1:y,x2:W-R,y2:y,stroke:css("--line"),"stroke-width":1},svg);
+    var t = el("text",{x:L-8,y:y+4,"text-anchor":"end",fill:css("--faint"),"font-size":11.5,"font-family":"ui-monospace,Consolas,monospace"},svg);
+    t.textContent = tv;
+  });
+  var total = gapHist.reduce(function(a,b){return a+b;},0);
+  var last5 = gapHist.slice(0,5).reduce(function(a,b){return a+b;},0);
+  var cumArr = []; var run = 0;
+  for (var c2=0;c2<n;c2++){ run += gapHist[c2]; cumArr.push(run); }
+  for (var i=0;i<n;i++){
+    (function(i){
+      var v = gapHist[i];
+      var hot = i<5;
+      el("rect",{x:X(i)-bw/2,y:Y(v),width:bw,height:Y(0)-Y(v),rx:2,
+        fill:hot?css("--orange"):css("--accent"),opacity:hot?1:0.75},svg);
+      var hit = el("rect",{x:X(i)-bw/2-2,y:T,width:bw+4,height:H-T-B,fill:"transparent"},svg);
+      hit.addEventListener("mousemove",function(){
+        var cumPct = Math.round(cumArr[i]/total*100);
+        showTip(tip,box,X(i),Y(v)-4,(i===0?"Renewal day":i+" day"+(i>1?"s":"")+" left")+" · <b>"+v+"</b> cancels · "+cumPct+"% happen with ≤"+i+" day"+(i===1?"":"s")+" left");
+      });
+      hit.addEventListener("mouseleave",function(){ hideTip(tip); });
+    })(i);
+  }
+  [0,5,10,15,20,25,30].forEach(function(d){
+    var t = el("text",{x:X(d),y:H-24,"text-anchor":"middle",fill:css("--muted"),"font-size":11.5,"font-family":"ui-monospace,Consolas,monospace"},svg);
+    t.textContent = d;
+  });
+  var xl = el("text",{x:(L+W-R)/2,y:H-6,"text-anchor":"middle",fill:css("--faint"),"font-size":12},svg);
+  xl.textContent = "days remaining before the next charge";
+  var pct = Math.round(last5/total*100);
+  var bl = el("text",{x:X(2),y:T+2,"text-anchor":"start",fill:css("--orange"),"font-size":12.5,"font-weight":700},svg);
+  bl.textContent = "last 5 days: "+pct+"% of all cancels";
+})();
+var tq4b = document.getElementById("t-q4b");
+tq4b.innerHTML = "<tr><th>Days before renewal</th><th>Cancels</th></tr>" +
+  gapHist.map(function(v,i){ return "<tr><td>"+i+"</td><td>"+v+"</td></tr>"; }).join("");
+
+/* ---------- theme switch (sun / moon) ---------- */
+var sw = document.getElementById("themeSw");
+var mq = window.matchMedia("(prefers-color-scheme: dark)");
+function effTheme(){
+  var dt = document.documentElement.getAttribute("data-theme");
+  return dt || (mq.matches ? "dark" : "light");
+}
+function syncSw(){ sw.setAttribute("aria-checked", effTheme()==="dark" ? "true" : "false"); }
+sw.addEventListener("click", function(){
+  document.documentElement.setAttribute("data-theme", effTheme()==="dark" ? "light" : "dark");
+  syncSw();
+});
+if (mq.addEventListener) mq.addEventListener("change", syncSw);
+new MutationObserver(syncSw).observe(document.documentElement, {attributes:true, attributeFilter:["data-theme"]});
+syncSw();
+
+/* ---------- nav highlights the section in view ---------- */
+var navLinks = {};
+document.querySelectorAll("nav.chips a").forEach(function(a){ navLinks[a.getAttribute("href").slice(1)] = a; });
+var obs = new IntersectionObserver(function(entries){
+  entries.forEach(function(e){
+    if (e.isIntersecting){
+      Object.keys(navLinks).forEach(function(k){ navLinks[k].classList.remove("on"); });
+      navLinks[e.target.id].classList.add("on");
+    }
+  });
+}, {rootMargin:"-30% 0px -55% 0px"});
+document.querySelectorAll("section.q").forEach(function(s){ obs.observe(s); });
+})();
+</script>
